@@ -5,7 +5,7 @@
 export function all(expressions, then) {
   let results;
 
-  for (const expr in expressions) {
+  for (const expr of expressions) {
     const result = expr();
     if (typeof result !== "undefined") {
       results.push(result);
@@ -23,8 +23,7 @@ export function all(expressions, then) {
 */
 
 export function any(expressions, then) {
-
-  for (const expr in expressions) {
+  for (const expr of expressions) {
     const result = expr();
     if (typeof result !== "undefined") {
       return then ? then(result) : result;

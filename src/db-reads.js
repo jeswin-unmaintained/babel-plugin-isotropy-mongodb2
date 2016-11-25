@@ -2,8 +2,8 @@ import template from "babel-template";
 import * as t from "babel-types";
 import generate from "babel-generator";
 import util from "util";
-import expressions from "./parser-expressions";
-import queryable from "./queryable";
+import * as expressions from "./parser-expressions";
+import * as queryable from "./queryable";
 
 /*
   The read visitor handles operations where we don't mutate the db collection.
@@ -19,24 +19,49 @@ function parseCollection(path) {
 }
 
 
-function parseQueryables(path, then) {
+/*
+  Any expression on which you can chain more methods.
+
+  //db.todos.filter()
+  //db.todos.filter().filter()
+  //db.todos.map().filter()
+  //db.todos.map().slice()
+  //db.todos.sort()
+*/
+
+export function parseQueryables(path, then) {
   return expressions.any(
     [
-      //db.todos.filter()
       () => parseCollection(path),
-      //db.todos.filter().filter()
       () => parseFilter(path),
-      //db.todos.map().filter()
       () => parseMap(path),
-      //db.todos.map().slice()
       () => parseSlice(path),
-      //db.todos.sort()
       () => parseSort(path)
     ],
     then
   );
 }
 
+
+/*
+  db.todos.filter().length
+  or generally, a property accessor you attach at the end of a queryable chain.
+  No more chanining is possible.
+*/
+
+export function parsePostQueryables(path, then) {
+  return expressions.any(
+    [
+      () => parseLength(path)
+    ],
+    then
+  )
+}
+
+
+/*
+  db.todos.filter(...)
+*/
 
 function parseFilter(path) {
   return path.isCallExpression() && path.node.property.name === "filter" ?
@@ -56,6 +81,10 @@ function parseFilterParams() {
 }
 
 
+/*
+  db.todos.map(...)
+*/
+
 function parseMap(path) {
   return path.isCallExpression() && path.node.property.name === "map" ?
     expressions.all(
@@ -74,12 +103,9 @@ function parseMapParams() {
 }
 
 
-function parseLength(path) {
-  return path.isMemberExpression() && path.get("property").isIdentifier() && path.node.property.name === "length" ?
-    parseQueryables(path.get("object"), query => queryable.length(query)) :
-    undefined;
-}
-
+/*
+  db.todos.filter(...).slice(...)
+*/
 
 function parseSlice(path) {
   return path.isCallExpression() && path.node.property.name === "slice" ?
@@ -97,6 +123,10 @@ function parseSliceParams() {
 
 }
 
+
+/*
+  db.todos.filter(...).sort(...)
+*/
 
 function parseSort(path) {
   return path.isCallExpression() && path.node.property.name === "sort" ?
@@ -116,8 +146,12 @@ function parseSortParams(path) {
 }
 
 
-// const x = db.todos.filter(...)
-function parseVariableDeclaration(path) {
-  // return path.isVariableDeclaration() ?
-  //   expressions.any
+/*
+  db.todos.filter(...).length
+*/
+
+function parseLength(path) {
+  return path.isMemberExpression() && path.get("property").isIdentifier() && path.node.property.name === "length" ?
+    parseQueryables(path.get("object"), query => queryable.length(query)) :
+    undefined;
 }
