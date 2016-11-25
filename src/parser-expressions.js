@@ -10,7 +10,7 @@ export function all(expressions, then) {
     if (typeof result !== "undefined") {
       results.push(result);
     } else {
-      return then ? then() : undefined;
+      return [];
     }
   }
 
@@ -30,5 +30,5 @@ export function any(expressions, then) {
     }
   }
 
-  return then ? then() : undefined;
+  return then && then();
 }

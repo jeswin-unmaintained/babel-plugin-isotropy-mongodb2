@@ -64,7 +64,7 @@ export function parsePostQueryables(path, then) {
 */
 
 function parseFilter(path) {
-  return path.isCallExpression() && path.node.property.name === "filter" ?
+  return path.isCallExpression() && path.node.callee.property.name === "filter" ?
     expressions.all(
       [
         () => parseQueryables(path.get("callee")),
@@ -86,7 +86,7 @@ function parseFilterParams() {
 */
 
 function parseMap(path) {
-  return path.isCallExpression() && path.node.property.name === "map" ?
+  return path.isCallExpression() && path.node.callee.property.name === "map" ?
     expressions.all(
       [
         () => parseQueryables(path.get("callee")),
@@ -108,7 +108,7 @@ function parseMapParams() {
 */
 
 function parseSlice(path) {
-  return path.isCallExpression() && path.node.property.name === "slice" ?
+  return path.isCallExpression() && path.node.callee.property.name === "slice" ?
     expressions.all(
       [
         () => parseQueryables(path.get("callee")),
@@ -129,7 +129,7 @@ function parseSliceParams() {
 */
 
 function parseSort(path) {
-  return path.isCallExpression() && path.node.property.name === "sort" ?
+  return path.isCallExpression() && path.node.callee.property.name === "sort" ?
     expressions.all(
       [
         () => parseQueryables(path.get("callee")),
