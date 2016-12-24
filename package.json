@@ -1,4 +1,6 @@
 {
+  "name": "babel-plugin-isotropy-mongodb",
+  "version": "0.0.1",
   "author": "Jeswin<jeswinpk@agilehead.com>",
   "private": true,
   "scripts": {
