@@ -90,8 +90,8 @@ Configuration in package.json
 {
   "isotropy": {
     "mongodb": {
-      "databases": {
-        "db": {
+      "connections": {
+        "default": {
           "host": "localhost",
           "port": 19027,
           "password": "abcsfdef",
@@ -105,13 +105,13 @@ Configuration in package.json
 
 Advanced
 --------
-You can specify multiple databases, and use identifiers other than "db".
+You can specify multiple databases.
 
 ```json
 {
   "isotropy": {
     "mongodb": {
-      "databases": {
+      "connections": {
         "todosDb": {
           "host": "localhost",
           "port": 19027,
@@ -149,8 +149,7 @@ Instead, you'll have to use the import syntax.
 {
   "isotropy": {
     "mongodb": {
-      "useImports": true,
-      "databases": {
+      "connections": {
         "todosDb": {
           "host": "localhost",
           "port": 19027,
@@ -173,11 +172,10 @@ You'll have to write code like this
 
 ```javascript
 import db from "isotropy-db";
-const todosDb = db("todosDb");
-const authDb = db("authDb");
+const todosDb = db("todosDb", { todos: [] });
+const authDb = db("authDb", { users: [] };
 
 async function getTodos(who) {
   return todosDb.todos.filter(todo => todo.assignee === who);
-  return authDb.users.filter(u => u.name === "jack");
 }
 ```

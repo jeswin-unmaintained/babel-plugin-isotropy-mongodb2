@@ -1,3 +1,5 @@
-async function getTodos(who) {
-  return db.todos.filter(todo => todo.assignee === who);
+import __mongodb from "isotropy-mongodb-server";
+
+async function countTodos(who) {
+  return await __mongodb("db").collection("todos").find({ assignee: who }).count();
 }
