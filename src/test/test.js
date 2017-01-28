@@ -13,8 +13,7 @@ describe("babel-plugin-isotropy-mongodb", () => {
     it(`${description}`, () => {
       const fixturePath = path.resolve(__dirname, 'fixtures', dir, `fixture.js`);
       const expectedPath = path.resolve(__dirname, 'fixtures', dir, `expected.js`);
-
-      const expected = fs.readFileSync(expectedPath);
+      const expected = fs.readFileSync(expectedPath).toString().replace(/\n*$/, "");
 
       const actual = babel.transformFileSync(fixturePath, {
         plugins: [
@@ -28,22 +27,22 @@ describe("babel-plugin-isotropy-mongodb", () => {
         babelrc: false,
       });
 
-      console.log(actual.code);
-      //actual.should.equal(expected.toString());
+      //console.log(actual.code);
+      actual.code.should.equal(expected);
     });
   }
 
   const tests = [
-    //['count', 'count'],
+    ['count', 'count'],
     // ['delete', 'delete'],
     // ['insert', 'insert'],
-    // ['select', 'select'],
+    //['select', 'select'],
     // ['select-all', 'select-all'],
     // ['select-fields', 'select-fields'],
     // ['select-slice', 'select-slice'],
     // ['select-sort', 'select-sort'],
     // ['update', 'update'],
-    ['import-select', 'import-select', { import: true }],
+    // ['import-select', 'import-select', { import: true }],
     // ['import-update', 'import-update', { simple: false }],
   ];
 

@@ -1,11 +1,13 @@
 import Immutable from "immutable";
-import template from "babel-template";
+import * as babylon from "babylon";
 
-function buildCollection(source, config) {
-  return config.identifier ? "ERROR" : `${source.identifier}.collection("${source.collection}")`;
+function buildCollection(source, config, precedingAST) {
+  return config.identifiers ?
+    `__mongodb("${source.identifier}").collection("${source.collection}")` :
+    `${source.identifier}.collection("${source.collection}")`;
 }
 
-function buildCount() {
+function buildCount(source, config, precedingAST) {
   return "count()";
 }
 
