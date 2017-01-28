@@ -1,13 +1,13 @@
 import Immutable from "immutable";
 import * as babylon from "babylon";
 
-function buildCollection(source, config, precedingAST) {
+function buildCollection(source, config) {
   return config.identifiers ?
     `__mongodb("${source.identifier}").collection("${source.collection}")` :
     `${source.identifier}.collection("${source.collection}")`;
 }
 
-function buildCount(source, config, precedingAST) {
+function buildCount(source, config) {
   return "count()";
 }
 
@@ -19,12 +19,13 @@ function buildMap() {
   return "map()";
 }
 
-function buildSlice() {
-  return "slice()";
+function buildSlice(source, config) {
+  return `slice(${source.from}, ${source.to})`;
 }
 
-function buildSort() {
-  return "sort()";
+function buildSort(source, config) {
+  const fields = source.fields.map(i => `${i.field}: ${i.ascending}`).join(", ")
+  return `sort({${fields}})`;
 }
 
 function buildDbStatment(source, config, precedingDbStatement) {

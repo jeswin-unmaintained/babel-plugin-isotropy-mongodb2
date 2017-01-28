@@ -34,6 +34,8 @@ describe("babel-plugin-isotropy-mongodb", () => {
 
   const tests = [
     ['count', 'count'],
+    ['slice', 'slice'],
+    ['sort', 'sort'],
     // ['delete', 'delete'],
     // ['insert', 'insert'],
     //['select', 'select'],

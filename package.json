@@ -9,7 +9,7 @@
   "dependencies": {
     "babel-template": "^6.22.0",
     "immutable": "^3.8.1",
-    "isotropy-ast-analyzer-db": "^0.0.15"
+    "isotropy-ast-analyzer-db": "^0.0.16"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
