@@ -38,7 +38,7 @@ describe("babel-plugin-isotropy-mongodb", () => {
     ['sort', 'sort'],
     // ['delete', 'delete'],
     // ['insert', 'insert'],
-    //['select', 'select'],
+    ['select', 'select'],
     // ['select-all', 'select-all'],
     // ['select-fields', 'select-fields'],
     // ['select-slice', 'select-slice'],
